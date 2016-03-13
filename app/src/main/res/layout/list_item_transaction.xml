@@ -48,6 +48,17 @@
                 android:layout_below="@+id/transaction_title"
                 />
 
+            <!-- Timestamp -->
+            <TextView
+                android:id="@+id/timestamp"
+                style="@style/WrapContentStyle"
+                android:text="5 hr ago"
+                android:textColor="@color/secondary_text"
+                android:layout_alignTop="@+id/btn_decline"
+                android:layout_alignBottom="@+id/btn_decline"
+                android:gravity="center_vertical"
+                />
+
             <!-- Action buttons -->
             <!-- Decline -->
             <Button
