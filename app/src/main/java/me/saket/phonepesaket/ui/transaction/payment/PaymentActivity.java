@@ -1,11 +1,11 @@
 package me.saket.phonepesaket.ui.transaction.payment;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import me.saket.phonepesaket.R;
+import me.saket.phonepesaket.ui.BaseActivity;
 
-public class PaymentActivity extends AppCompatActivity {
+public class PaymentActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,14 +1,14 @@
 package me.saket.phonepesaket.ui.main;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import me.saket.phonepesaket.R;
+import me.saket.phonepesaket.ui.BaseActivity;
 
 /**
- * Homescreen of the app.
+ * Home-screen of the app.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

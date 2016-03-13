@@ -13,8 +13,8 @@ public class AccountDetails extends RealmObject {
 
     /**
      * FIXME: Is this correct?
-     * Id of the user. Used by the server who has to
-     * maintain multiple users unlike this phone.
+     * User id of the account holder. In this case, this will be the phone user.
+     * Probably useful for the server who has to maintain multiple users.
      */
     public long userId;
 
