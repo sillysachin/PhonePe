@@ -7,6 +7,8 @@ import me.saket.phonepesaket.data.EventBus;
  * Provides
  * 1. Access to the event-bus
  * 2.
+ *
+ * @param <V> Type of View this presenter will be managing.
  */
 public abstract class BasePresenter<V extends BaseMvpView> {
 
