@@ -97,6 +97,26 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
     }
 
     @Override
+    public long getItemId(int position) {
+        final Object item = getItem(position);
+        final int viewType = getItemViewType(position);
+
+        switch (viewType) {
+            case VIEW_TYPE_HEADER:
+                return ((HeaderItem) item).headerId;
+
+            case VIEW_TYPE_TRANSACTION:
+                return ((Transaction) item).id;
+
+            case VIEW_TYPE_LOADING_PROGRESS:
+                return RecyclerView.NO_ID;
+
+            default:
+                throw new IllegalStateException("Unknown view-type: " + viewType);
+        }
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_HEADER:
