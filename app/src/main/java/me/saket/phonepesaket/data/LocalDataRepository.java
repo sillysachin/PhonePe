@@ -12,23 +12,23 @@ import me.saket.phonepesaket.data.models.TransactionStatus;
  * Handles storing and retrieving app's local data.
  * Should only be accessed through managers, like {@link TransactionManager}.
  */
-public class DataRepository {
+public class LocalDataRepository {
 
     public static final long DATABASE_VERSION = 0L;
     public static final String DATABASE_NAME = "PhonePeDatabase";
 
-    private static DataRepository sDataRepository;
+    private static LocalDataRepository sLocalDataRepository;
     private Realm mRealm;
 
-    public DataRepository(Realm realm) {
+    public LocalDataRepository(Realm realm) {
         mRealm = realm;
     }
 
-    public static DataRepository getInstance() {
-        if (sDataRepository == null) {
-            sDataRepository = new DataRepository(Realm.getDefaultInstance());
+    public static LocalDataRepository getInstance() {
+        if (sLocalDataRepository == null) {
+            sLocalDataRepository = new LocalDataRepository(Realm.getDefaultInstance());
         }
-        return sDataRepository;
+        return sLocalDataRepository;
     }
 
     /**

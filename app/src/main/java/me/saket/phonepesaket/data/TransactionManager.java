@@ -13,13 +13,13 @@ import me.saket.phonepesaket.data.models.TransactionStatus;
 public class TransactionManager {
 
     private static TransactionManager sTransactionManager;
-    private DataRepository mDataRepository;
+    private LocalDataRepository mLocalDataRepository;
     private EventBus mEventBus;
     private DataRepoErrorHandler mErrorHandler;
 
-    public TransactionManager(DataRepository dataRepository, DataRepoErrorHandler errorHandler,
+    public TransactionManager(LocalDataRepository localDataRepository, DataRepoErrorHandler errorHandler,
                               EventBus eventBus) {
-        mDataRepository = dataRepository;
+        mLocalDataRepository = localDataRepository;
         mErrorHandler = errorHandler;
         mEventBus = eventBus;
     }
@@ -27,7 +27,7 @@ public class TransactionManager {
     public static TransactionManager getInstance() {
         if (sTransactionManager == null) {
             sTransactionManager = new TransactionManager(
-                    DataRepository.getInstance(),
+                    LocalDataRepository.getInstance(),
                     DataRepoErrorHandler.getInstance(),
                     EventBus.getInstance()
             );
@@ -43,7 +43,7 @@ public class TransactionManager {
      */
     public List<Transaction> getPendingTransactions() {
         try {
-            return mDataRepository.getPendingTransactions();
+            return mLocalDataRepository.getPendingTransactions();
         } catch (Exception e) {
             mErrorHandler.handle(e);
             return null;
@@ -59,7 +59,7 @@ public class TransactionManager {
      */
     public List<Transaction> getPastTransactions() {
         try {
-            return mDataRepository.getPastTransactions();
+            return mLocalDataRepository.getPastTransactions();
         } catch (Exception e) {
             mErrorHandler.handle(e);
             return null;
