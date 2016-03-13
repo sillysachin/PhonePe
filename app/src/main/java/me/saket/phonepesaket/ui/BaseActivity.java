@@ -1,17 +1,27 @@
 package me.saket.phonepesaket.ui;
 
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-
-import me.saket.phonepesaket.data.EventBus;
 
 /**
  * Handles:
  * 1. Setting up of support toolbar.
- * 2. Subscribing and unSubscribing to the event-bus. This way, all activities that extend
- *    this class get easy access to it.
+ * 2.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    @Nullable private BasePresenter<? extends BaseMvpView> mPresenter;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = createPresenter();
+    }
+
+    @Nullable
+    protected abstract BasePresenter<? extends BaseMvpView> createPresenter();
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -26,19 +36,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getEventBus().register(this);
+        if (mPresenter != null) {
+            mPresenter.registerForEvents();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        getEventBus().unregister(this);
+        if (mPresenter != null) {
+            mPresenter.unregisterForEvents();
+        }
     }
 
-// ======== GETTERS ======== //
+// ======== GETTERS & SETTERS ======== //
 
-    protected EventBus getEventBus() {
-        return EventBus.getInstance();
+    public void setPresenter(@Nullable BasePresenter presenter) {
+        mPresenter = presenter;
     }
 
 }
