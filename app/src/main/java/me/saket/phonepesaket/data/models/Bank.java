@@ -11,8 +11,7 @@ public class Bank extends RealmObject {
     public long bankId;
 
     /**
-     * Name of the bank.
-     * Eg., HDFC, Citi bank, etc.
+     * {@link #getBankName()}
      */
     private String mBankName;
 
@@ -21,21 +20,14 @@ public class Bank extends RealmObject {
      */
     public String ifscPrefix;
 
-    /**
-     * FIXME
-     */
     public boolean isPartner;
-
-    /**
-     * FIXME
-     */
     public boolean isPremier;
-
-    /**
-     * FIXME
-     */
     public int priority;
 
+    /**
+     * Name of the bank. See {@link BankName}
+     * Eg., HDFC, Citi bank, etc.
+     */
     public BankName getBankName() {
         return mBankName == null ? null : BankName.valueOf(mBankName);
     }

@@ -5,7 +5,7 @@ package me.saket.phonepesaket.data.models;
  */
 public enum TransactionStatus {
     /**
-     * FIXME
+     * User created a transaction and is waiting for the other end to respond.
      */
     CREATED,
 
@@ -15,7 +15,7 @@ public enum TransactionStatus {
     COMPLETED,
 
     /**
-     * FIXME
+     * The user who created the transaction later canceled it.
      */
     CANCELLED,
 

@@ -5,15 +5,13 @@ package me.saket.phonepesaket.data.models;
  */
 public enum TransactionType {
     /**
-     * FIXME
-     * User initiated transaction?
+     * User initiated this transaction on his own.
      */
     PAY,
 
     /**
-     * FIXME
-     * Payment made to a service, for example a store.
-     * The user was asked to make this payment.
+     * Some other user requested a payment. This could a service or some person.
+     * Eg., when buying something in BigBazaar, they will collect payment from the user.
      */
     COLLECT,
 

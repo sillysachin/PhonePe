@@ -35,13 +35,11 @@ public class Transaction extends RealmObject {
     private String mTransactionStatus;
 
     /**
-     * FIXME
      * Phone number of the user at the other side of this transaction.
      */
     public String secondUserMobile;
 
     /**
-     * FIXME
      * Whether or not this transaction was initiated by this user.
      */
     public boolean isOriginator;
