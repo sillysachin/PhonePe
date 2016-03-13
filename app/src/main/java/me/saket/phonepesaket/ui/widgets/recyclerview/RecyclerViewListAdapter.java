@@ -3,24 +3,22 @@ package me.saket.phonepesaket.ui.widgets.recyclerview;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by Saketme on 25-04-2015.
  * Base class for an Array Adapter to be used with a RecyclerView.
- * Use {@link #updateDataset(List)} for updating the data-set.
+ * Use {@link #updateData(List)} for updating the data-set.
  *
  * @param <T>  Type of the list items
  * @param <VH> Type of the ViewHolder
  */
-public abstract class ArrayAdapterRecyclerView<T, VH extends RecyclerView.ViewHolder>
+public abstract class RecyclerViewListAdapter<T, VH extends RecyclerView.ViewHolder>
         extends BaseRecyclerViewAdapter<VH> {
 
     private List<T> mObjects;
 
-    public ArrayAdapterRecyclerView(Context context, final List<T> objects) {
+    public RecyclerViewListAdapter(Context context, final List<T> objects) {
         super(context);
         mObjects = objects;
     }
@@ -33,14 +31,6 @@ public abstract class ArrayAdapterRecyclerView<T, VH extends RecyclerView.ViewHo
     public void add(final T object) {
         mObjects.add(object);
         notifyItemInserted(getItemCount() - 1);
-    }
-
-    /**
-     * Replaces the existing data-set with a new one.
-     */
-    public void updateDataset(List<T> newObjects) {
-        mObjects = newObjects;
-        notifyDataSetChanged();
     }
 
     /**
@@ -61,7 +51,9 @@ public abstract class ArrayAdapterRecyclerView<T, VH extends RecyclerView.ViewHo
         return mObjects != null ? mObjects.get(position) : null;
     }
 
-    public abstract long getItemId(final int position);
+    public long getItemId(final int position) {
+        return position;
+    }
 
     /**
      * Returns the position of the specified item in the array.
@@ -96,20 +88,22 @@ public abstract class ArrayAdapterRecyclerView<T, VH extends RecyclerView.ViewHo
     }
 
     /**
-     * Sorts the content of this adapter using the specified comparator.
-     *
-     * @param comparator The comparator used to sort the objects contained in this adapter.
+     * Returns the data-set.
      */
-    public void sort(Comparator<? super T> comparator) {
-        Collections.sort(mObjects, comparator);
-        notifyItemRangeChanged(0, getItemCount());
+    public List<T> getData() {
+        return mObjects;
     }
 
     /**
-     * Returns the data-set.
+     * Refreshes the existing data-set with a new one.
      */
-    public List<T> getItems() {
-        return mObjects;
+    public void updateData(List<T> newObjects) {
+        onDataAboutToBeUpdated(newObjects);
+        notifyDataSetChanged();
+    }
+
+    protected void onDataAboutToBeUpdated(List<T> newResults) {
+        // For rent. Broker free.
     }
 
 }
