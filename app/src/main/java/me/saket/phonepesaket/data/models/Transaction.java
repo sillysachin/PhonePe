@@ -1,8 +1,11 @@
 package me.saket.phonepesaket.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigDecimal;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import me.saket.phonepesaket.utils.Objects;
 
 /**
@@ -11,38 +14,46 @@ import me.saket.phonepesaket.utils.Objects;
 public class Transaction extends RealmObject {
 
     public static final String COLUMN_TXN_STATUS = "transactionStatus";
-    public long id;
+
+    @SerializedName("id")
+    @PrimaryKey public long id;
 
     /**
      * The {@link AccountDetails account} used for making this transaction.
      * This account belongs to the user.
      */
+    @SerializedName("accountDetails")
     public AccountDetails accountDetails;
 
     /**
      * Amount paid / received.
      * See {@link #getAmount()} and {@link #setAmount(BigDecimal)}.
      */
+    @SerializedName("type")
     private String amount;
 
     /**
      * See {@link #getTransactionType()}
      */
+    @SerializedName("type")
     private String transactionType;
 
     /**
      * See {@link #getTransactionStatus()}
      */
+    @SerializedName("status")
     private String transactionStatus;
 
     /**
      * Phone number of the user at the other side of this transaction.
      */
+    @SerializedName("secondUserMobile")
     public String secondUserMobile;
 
     /**
      * Whether or not this transaction was initiated by this user.
      */
+    @SerializedName("isOriginator")
     public boolean isOriginator;
 
     public BigDecimal getAmount() {

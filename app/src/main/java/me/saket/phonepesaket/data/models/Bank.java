@@ -1,5 +1,7 @@
 package me.saket.phonepesaket.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import me.saket.phonepesaket.utils.Objects;
 
@@ -8,16 +10,19 @@ import me.saket.phonepesaket.utils.Objects;
  */
 public class Bank extends RealmObject {
 
+    @SerializedName("bankId")
     public long bankId;
 
     /**
      * {@link #getBankName()}
      */
+    @SerializedName("bankName")
     private String mBankName;
 
     /**
      * First 4 characters of this bank's IFSC code since they're constant.
      */
+    @SerializedName("ifscPrefix")
     public String ifscPrefix;
 
     public boolean isPartner;

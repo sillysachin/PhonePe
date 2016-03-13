@@ -1,5 +1,7 @@
 package me.saket.phonepesaket.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigDecimal;
 
 import io.realm.RealmObject;
@@ -9,6 +11,7 @@ import io.realm.RealmObject;
  */
 public class AccountDetails extends RealmObject {
 
+    @SerializedName("accountId")
     public long id;
 
     /**
@@ -16,18 +19,25 @@ public class AccountDetails extends RealmObject {
      * User id of the account holder. In this case, this will be the phone user.
      * Probably useful for the server who has to maintain multiple users.
      */
+    @SerializedName("userId")
     public long userId;
 
     /**
      * Id of the {@link Bank} where this account exists.
      */
+    @SerializedName("bankId")
     public long bankId;
 
+    /**
+     * Account number for this bank account.
+     */
+    @SerializedName("accountNo")
     public String accountNumber;
 
     /**
      * Account's IFS code.
      */
+    @SerializedName("ifsc")
     public String ifsc;
 
     /**
@@ -36,21 +46,11 @@ public class AccountDetails extends RealmObject {
      *
      * See {@link #getBalance()} and {@link #setBalance(BigDecimal)}
      */
+    @SerializedName("balance")
     private String mBalance;
 
-    /**
-     * FIXME
-     */
     public boolean isLinked;
-
-    /**
-     * FIXME
-     */
     public boolean isPrimary;
-
-    /**
-     * FIXME
-     */
     public boolean isActive;
 
     public BigDecimal getBalance() {
