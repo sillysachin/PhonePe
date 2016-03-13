@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2015 Tomás Ruiz-López.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package me.saket.phonepesaket.ui.widgets.recyclerview;
 
 import android.content.Context;
@@ -30,16 +15,16 @@ import java.util.Set;
  * An extension of SectionedRecyclerViewAdapter for simple sectioned RecyclerViews
  * that supports list headers. The information for the headers has to be passed
  * inside {@link #constructSectionStructure(List)}.
- *
+ * <p>
  * One section is a group of list items under one header.
  *
- * @param <T> Type of the list items
- * @param <VH> Type of the ViewHolder for list items
+ * @param <T>   Type of the list items
+ * @param <VH>  Type of the ViewHolder for list items
  * @param <HVH> Type of the ViewHolder for section headers.
  */
 public abstract class SimpleSectionedListAdapter<T, VH extends RecyclerView.ViewHolder,
         HVH extends ViewHolder> extends SectionedRecyclerViewListAdapter<T, HVH, VH,
-                ViewHolder> {
+        ViewHolder> {
 
     private SectionStructure mSectionStructure;
     private Set<Integer> mSectionHeaderViewTypeCache;
@@ -69,15 +54,17 @@ public abstract class SimpleSectionedListAdapter<T, VH extends RecyclerView.View
     protected abstract HVH onCreateSectionHeaderViewHolder(ViewGroup parent, int viewType);
 
     @Override
+    protected abstract void onBindSectionHeaderViewHolder(HVH holder, int section);
+
+    @Override
     protected ViewHolder onCreateSectionFooterViewHolder(ViewGroup parent, int viewType) {
         return null;
     }
 
     @Override
-    protected abstract void onBindSectionHeaderViewHolder(HVH holder, int section);
+    protected void onBindSectionFooterViewHolder(ViewHolder holder, int section) {
 
-    @Override
-    protected void onBindSectionFooterViewHolder(ViewHolder holder, int section) {}
+    }
 
 // ======== DATA SET ======== //
 
@@ -105,7 +92,15 @@ public abstract class SimpleSectionedListAdapter<T, VH extends RecyclerView.View
         }
     }
 
-    /** Returning null will reset the sections. */
+    /**
+     * {@link SectionStructure} controls how your items will be divided into
+     * "sections" (or simple, groups), where each section has one header.
+     * <p>
+     * This is called once everytime your data-set is updated. That is,
+     * {@link #updateData(List)} is called.
+     * <p>
+     * Returning null will reset the sections.
+     */
     @Nullable
     protected abstract SectionStructure constructSectionStructure(@NonNull List<T> newDataSet);
 
