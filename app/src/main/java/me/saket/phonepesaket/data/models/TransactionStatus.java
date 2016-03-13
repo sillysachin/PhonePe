@@ -3,7 +3,7 @@ package me.saket.phonepesaket.data.models;
 /**
  * Status of a transaction made by the user.
  */
-public enum Status {
+public enum TransactionStatus {
     /**
      * FIXME
      */
