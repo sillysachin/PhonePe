@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import butterknife.ButterKnife;
+import me.saket.phonepesaket.R;
 
 /**
  * Handles:
@@ -24,7 +28,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        // TODO
+        final Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            //noinspection ConstantConditions
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override

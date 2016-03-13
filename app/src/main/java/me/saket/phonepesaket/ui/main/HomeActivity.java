@@ -7,8 +7,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.saket.phonepesaket.R;
 import me.saket.phonepesaket.ui.BaseActivity;
-import me.saket.phonepesaket.ui.BaseMvpView;
-import me.saket.phonepesaket.ui.BasePresenter;
 import me.saket.phonepesaket.ui.transaction.list.TransactionListActivity;
 
 /**
@@ -23,12 +21,17 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        // No home toolbar button for this screen.
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        mHomePresenter = new HomePresenter(this);
     }
 
     @Nullable
     @Override
-    protected BasePresenter<? extends BaseMvpView> getPresenter() {
-        mHomePresenter = new HomePresenter(this);
+    protected HomePresenter getPresenter() {
         return mHomePresenter;
     }
 
