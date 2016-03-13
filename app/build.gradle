@@ -1,4 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+apply plugin: 'me.tatarka.retrolambda'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'io.realm:realm-gradle-plugin:0.88.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+
+}
 
 android {
     compileSdkVersion 23
@@ -21,6 +36,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
+
+    // Unit testing
+    testCompile 'junit:junit:4.12'
+
+    // RxJava
+    compile 'io.reactivex:rxjava:1.1.1'
 }
