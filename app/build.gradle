@@ -52,4 +52,7 @@ dependencies {
 
     // EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    // ButterKnife — for auto-injection of layout Views
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
