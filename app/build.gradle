@@ -51,5 +51,5 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
 
     // EventBus
-    compile 'com.squareup:otto:1.3.8'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }
