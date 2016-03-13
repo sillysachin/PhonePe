@@ -1,4 +1,4 @@
-package me.saket.phonepesaket.ui;
+package me.saket.phonepesaket.ui.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,14 +6,14 @@ import android.os.Bundle;
 import me.saket.phonepesaket.R;
 
 /**
- * Shows a list of transactions — Pending and Completed (history).
+ * Homescreen of the app.
  */
-public class TransactionListActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_list);
+        setContentView(R.layout.activity_main);
     }
 
 }
