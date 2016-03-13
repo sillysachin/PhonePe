@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchParentStyle"
+    >
+
+    <!-- I never understood why name it ProgressBar when it
+    defaults to a progress circle -->
+    <ProgressBar
+        android:id="@+id/progress_circle"
+        style="@style/WrapContentStyle"
+        android:layout_gravity="center_horizontal"
+        />
+
+</FrameLayout >

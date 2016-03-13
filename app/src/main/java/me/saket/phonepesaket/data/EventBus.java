@@ -31,4 +31,8 @@ public class EventBus {
         mInternalBus.unregister(subscriber);
     }
 
+    public void emit(Object event) {
+        mInternalBus.post(event);
+    }
+
 }

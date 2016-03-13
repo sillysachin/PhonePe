@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchParentStyle"
+    android:paddingTop="@dimen/spacing_small"
+    android:paddingBottom="@dimen/spacing_small"
+    >
+
+    <TextView
+        android:id="@+id/txt_header"
+        style="@style/WrapContentStyle"
+        android:text="Header"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textAllCaps="true"
+        />
+
+</FrameLayout >
