@@ -8,11 +8,12 @@ import android.support.v7.widget.Toolbar;
 
 import butterknife.ButterKnife;
 import me.saket.phonepesaket.R;
+import me.saket.phonepesaket.data.EventBus;
 
 /**
  * Handles:
  * 1. Setting up of support toolbar.
- * 2.
+ * 2. Access to the event bus.
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -54,5 +55,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Nullable
     protected abstract BasePresenter<? extends BaseMvpView> getPresenter();
+
+    protected EventBus getEventBus() {
+        return EventBus.getInstance();
+    }
 
 }

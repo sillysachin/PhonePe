@@ -3,6 +3,7 @@ package me.saket.phonepesaket.ui.transaction.list;
 import android.content.Context;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import static me.saket.phonepesaket.utils.Collections.size;
 public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
         RecyclerView.ViewHolder> {
 
+    private static final String TAG = "TransactionListAdapter";
     public static final int VIEW_TYPE_TRANSACTION = 0;
     public static final int VIEW_TYPE_HEADER = 1;
     public static final int VIEW_TYPE_LOADING_PROGRESS = 2;
@@ -229,6 +231,7 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
         // TODO: Finally the loading indicator if down-sync is on-going
 
         // Refresh!
+        Log.i(TAG, "List updated with " + newItems.size() + " items");
         super.updateData(newItems);
     }
 

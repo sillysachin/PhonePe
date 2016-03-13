@@ -10,6 +10,7 @@ import me.saket.phonepesaket.utils.Objects;
  */
 public class Transaction extends RealmObject {
 
+    public static final String COLUMN_TXN_STATUS = "transactionStatus";
     public long id;
 
     /**
@@ -22,17 +23,17 @@ public class Transaction extends RealmObject {
      * Amount paid / received.
      * See {@link #getAmount()} and {@link #setAmount(BigDecimal)}.
      */
-    private String mAmount;
+    private String amount;
 
     /**
      * See {@link #getTransactionType()}
      */
-    private String mTransactionType;
+    private String transactionType;
 
     /**
      * See {@link #getTransactionStatus()}
      */
-    private String mTransactionStatus;
+    private String transactionStatus;
 
     /**
      * Phone number of the user at the other side of this transaction.
@@ -45,11 +46,11 @@ public class Transaction extends RealmObject {
     public boolean isOriginator;
 
     public BigDecimal getAmount() {
-        return new BigDecimal(mAmount);
+        return new BigDecimal(amount);
     }
 
     public void setAmount(BigDecimal amount) {
-        this.mAmount = amount.toPlainString();
+        this.amount = amount.toPlainString();
     }
 
     /**
@@ -59,11 +60,11 @@ public class Transaction extends RealmObject {
      * {@link TransactionType#RECHARGE RECHARGE}.
      */
     public TransactionType getTransactionType() {
-        return mTransactionType == null ? null : TransactionType.valueOf(mTransactionType);
+        return transactionType == null ? null : TransactionType.valueOf(transactionType);
     }
 
     public void setTransactionType(TransactionType transactionType) {
-        mTransactionType = Objects.toStringSafely(transactionType);
+        this.transactionType = Objects.toStringSafely(transactionType);
     }
 
     /**
@@ -74,11 +75,11 @@ public class Transaction extends RealmObject {
      * {@link TransactionStatus#DECLINED DECLINED}.
      */
     public TransactionStatus getTransactionStatus() {
-        return mTransactionStatus == null ? null : TransactionStatus.valueOf(mTransactionType);
+        return transactionStatus == null ? null : TransactionStatus.valueOf(transactionType);
     }
 
     public void setTransactionType(TransactionStatus transactionStatus) {
-        mTransactionStatus = Objects.toStringSafely(transactionStatus);
+        this.transactionStatus = Objects.toStringSafely(transactionStatus);
     }
 
 }
