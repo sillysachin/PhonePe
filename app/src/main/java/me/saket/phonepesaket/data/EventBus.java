@@ -1,21 +1,24 @@
 package me.saket.phonepesaket.data;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
+
 /**
  * Primary communication channel of this app.
- * Events can be posted on any thread and are received on the same thread they were emitted on.
+ * Events can be only posted on the main thread.
  */
 public class EventBus {
 
     private static EventBus sEventBus;
-    private org.greenrobot.eventbus.EventBus mInternalBus;
+    private Bus mInternalBus;
 
-    public EventBus(org.greenrobot.eventbus.EventBus internalBus) {
+    public EventBus(Bus internalBus) {
         mInternalBus = internalBus;
     }
 
     public static EventBus getInstance() {
         if (sEventBus == null) {
-            sEventBus = new EventBus(new org.greenrobot.eventbus.EventBus());
+            sEventBus = new EventBus(new Bus(ThreadEnforcer.MAIN));
         }
         return sEventBus;
     }
