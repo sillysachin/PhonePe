@@ -4,6 +4,7 @@ import java.util.List;
 
 import me.saket.phonepesaket.data.models.Transaction;
 import me.saket.phonepesaket.data.models.TransactionStatus;
+import me.saket.phonepesaket.services.PhonePeApi;
 
 /**
  * The data layer for managing all transactions across the app.
@@ -16,9 +17,10 @@ public class TransactionManager {
     private LocalDataRepository mLocalDataRepository;
     private EventBus mEventBus;
     private DataRepoErrorHandler mErrorHandler;
+    private PhonePeApi mPhonePeApi;
 
-    public TransactionManager(LocalDataRepository localDataRepository, DataRepoErrorHandler errorHandler,
-                              EventBus eventBus) {
+    public TransactionManager(LocalDataRepository localDataRepository, DataRepoErrorHandler
+            errorHandler, EventBus eventBus, PhonePeApi phonePeApi) {
         mLocalDataRepository = localDataRepository;
         mErrorHandler = errorHandler;
         mEventBus = eventBus;
@@ -29,7 +31,8 @@ public class TransactionManager {
             sTransactionManager = new TransactionManager(
                     LocalDataRepository.getInstance(),
                     DataRepoErrorHandler.getInstance(),
-                    EventBus.getInstance()
+                    EventBus.getInstance(),
+                    PhonePeApi.getInstance()
             );
         }
         return sTransactionManager;
