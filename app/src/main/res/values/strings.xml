@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">PhonePeSaket</string>
+    <string name="app_name">PhonePe</string>
+    <string name="transactions">Transactions</string>
 </resources>

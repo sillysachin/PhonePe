@@ -18,7 +18,7 @@ public class PaymentActivity extends BaseActivity {
 
     @Nullable
     @Override
-    protected BasePresenter<? extends BaseMvpView> createPresenter() {
+    protected BasePresenter<? extends BaseMvpView> getPresenter() {
         return null;
     }
 

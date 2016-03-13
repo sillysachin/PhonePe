@@ -12,16 +12,10 @@ import android.support.v7.app.AppCompatActivity;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    @Nullable private BasePresenter<? extends BaseMvpView> mPresenter;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = createPresenter();
     }
-
-    @Nullable
-    protected abstract BasePresenter<? extends BaseMvpView> createPresenter();
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -36,23 +30,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (mPresenter != null) {
-            mPresenter.registerForEvents();
+        if (getPresenter() != null) {
+            getPresenter().registerForEvents();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null) {
-            mPresenter.unregisterForEvents();
+        if (getPresenter() != null) {
+            getPresenter().unregisterForEvents();
         }
     }
 
-// ======== GETTERS & SETTERS ======== //
-
-    public void setPresenter(@Nullable BasePresenter presenter) {
-        mPresenter = presenter;
-    }
+    @Nullable
+    protected abstract BasePresenter<? extends BaseMvpView> getPresenter();
 
 }

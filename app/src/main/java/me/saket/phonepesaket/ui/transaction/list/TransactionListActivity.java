@@ -27,7 +27,7 @@ public class TransactionListActivity extends BaseActivity implements TxnListCont
 
     @NonNull
     @Override
-    protected BasePresenter<? extends BaseActivity> createPresenter() {
+    protected BasePresenter<? extends BaseActivity> getPresenter() {
         return null;
     }
 
