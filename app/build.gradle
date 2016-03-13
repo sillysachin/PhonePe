@@ -41,6 +41,9 @@ dependencies {
     // Unit testing
     testCompile 'junit:junit:4.12'
 
-    // RxJava
+    // RxJava — Reactive programming
     compile 'io.reactivex:rxjava:1.1.1'
+
+    // JSON parsing
+    compile 'com.google.code.gson:gson:2.6.2'
 }
