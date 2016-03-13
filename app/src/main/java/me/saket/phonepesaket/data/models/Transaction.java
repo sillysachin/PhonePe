@@ -25,12 +25,14 @@ public class Transaction extends RealmObject {
     private String mAmount;
 
     /**
-     * One of
-     * {@link TransactionType#COLLECT COLLECT},
-     * {@link TransactionType#PAY PAY} or
-     * {@link TransactionType#RECHARGE RECHARGE}.
+     * See {@link #getTransactionType()}
      */
     private String mTransactionType;
+
+    /**
+     * See {@link #getTransactionStatus()}
+     */
+    private String mTransactionStatus;
 
     /**
      * FIXME
@@ -52,12 +54,33 @@ public class Transaction extends RealmObject {
         this.mAmount = amount.toPlainString();
     }
 
+    /**
+     * One of
+     * {@link TransactionType#COLLECT COLLECT},
+     * {@link TransactionType#PAY PAY} or
+     * {@link TransactionType#RECHARGE RECHARGE}.
+     */
     public TransactionType getTransactionType() {
         return mTransactionType == null ? null : TransactionType.valueOf(mTransactionType);
     }
 
     public void setTransactionType(TransactionType transactionType) {
         mTransactionType = Objects.toStringSafely(transactionType);
+    }
+
+    /**
+     * One of
+     * {@link TransactionStatus#CREATED CREATED},
+     * {@link TransactionStatus#CANCELLED CANCELLED},
+     * {@link TransactionStatus#COMPLETED COMPLETED} or
+     * {@link TransactionStatus#DECLINED DECLINED}.
+     */
+    public TransactionStatus getTransactionStatus() {
+        return mTransactionStatus == null ? null : TransactionStatus.valueOf(mTransactionType);
+    }
+
+    public void setTransactionType(TransactionStatus transactionStatus) {
+        mTransactionStatus = Objects.toStringSafely(transactionStatus);
     }
 
 }
