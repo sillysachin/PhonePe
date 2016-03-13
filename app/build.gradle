@@ -46,4 +46,7 @@ dependencies {
 
     // JSON parsing
     compile 'com.google.code.gson:gson:2.6.2'
+
+    // Networking
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
 }
