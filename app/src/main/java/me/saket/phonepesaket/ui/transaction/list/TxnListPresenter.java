@@ -8,6 +8,7 @@ import com.squareup.otto.Subscribe;
 import java.util.List;
 
 import me.saket.phonepesaket.data.TransactionManager;
+import me.saket.phonepesaket.data.events.GenericNetworkErrorEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncEndEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncStartEvent;
 import me.saket.phonepesaket.data.events.TransactionsTableUpdateEvent;
@@ -62,6 +63,11 @@ public class TxnListPresenter extends BasePresenter<TxnListContract.View>
         refreshUiBasedOnData();
     }
 
+    @Subscribe
+    public void onNetworkError(GenericNetworkErrorEvent networkErrorEvent) {
+        mView.showGenericNetworkError();
+    }
+
 // ======== PAGINATION ======== //
 
     @Override
@@ -72,12 +78,14 @@ public class TxnListPresenter extends BasePresenter<TxnListContract.View>
     @Subscribe
     public void onLoadMoreTransactionsStart(TransactionListDownSyncStartEvent startEvent) {
         Log.i(TAG, "DownSyncing more items");
+        mView.setListLoadingProgressIndicatorVisible(true);
         refreshUiBasedOnData();
     }
 
     @Subscribe
     public void onLoadMoreTransactionsComplete(TransactionListDownSyncEndEvent endEvent) {
         Log.i(TAG, "DownSyncing complete");
+        mView.setListLoadingProgressIndicatorVisible(false);
         refreshUiBasedOnData();
     }
 

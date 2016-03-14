@@ -9,6 +9,7 @@
     <!-- Transaction list -->
     <string name="pending">Pending</string>
     <string name="history">History</string>
+    <string name="could_not_reach_phone_pe_servers">Could not reach PhonePe servers</string>
 
     <!-- Transaction item -->
     <string name="pay">Pay</string>

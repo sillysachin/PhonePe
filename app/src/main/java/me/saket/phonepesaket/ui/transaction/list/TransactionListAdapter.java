@@ -3,7 +3,6 @@ package me.saket.phonepesaket.ui.transaction.list;
 import android.content.Context;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
     /**
      * Represents the loading-more-items item in the list.
      */
-    class LoadingProgressHeaderItem {
+    class LoadingProgressItem {
     }
 
     public TransactionListAdapter(Context context, EventBus eventBus) {
@@ -92,7 +91,7 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
             return VIEW_TYPE_HEADER;
         }
 
-        if (item instanceof LoadingProgressHeaderItem) {
+        if (item instanceof LoadingProgressItem) {
             return VIEW_TYPE_LOADING_PROGRESS;
         }
 
@@ -208,40 +207,42 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
         // Start with the pending transactions
         if (!isEmpty(pendingTransactions)) {
             // Header
-            newItems.add(i, new HeaderItem(ITEM_ID_HEADER_PENDING, R.string.pending));
-            i++;
+            newItems.add(i++, new HeaderItem(ITEM_ID_HEADER_PENDING, R.string.pending));
 
             // Transaction items
             for (final Transaction pendingTransaction : pendingTransactions) {
-                newItems.add(i, pendingTransaction);
-                i++;
+                newItems.add(i++, pendingTransaction);
             }
         }
 
         // Next, past transactions
         if (!isEmpty(pastTransactions)) {
             // Header
-            newItems.add(i, new HeaderItem(ITEM_ID_HEADER_HISTORY, R.string.history));
-            i++;
+            newItems.add(i++, new HeaderItem(ITEM_ID_HEADER_HISTORY, R.string.history));
 
             // Transaction items
             for (final Transaction pastTransaction : pastTransactions) {
-                newItems.add(i, pastTransaction);
-                i++;
+                newItems.add(i++, pastTransaction);
             }
         }
 
-        // TODO: Finally the loading indicator if down-sync is on-going
+        // Finally the loading indicator if down-sync is on-going
+        if (mIsLoadingMoreItems) {
+            newItems.add(i, new LoadingProgressItem());
+        }
 
         // Refresh!
-        Log.i(TAG, "List updated with " + newItems.size() + " items");
         super.updateData(newItems);
     }
 
     /**
+     * Toggles the progress circle (shown at the bottom of the list).
+     * Calling this method does not automatically refresh the list. The changes
+     * only take place on the next call to {@link #updateData(List, List)}.
      *
+     * @param loadingMoreItems Shows the progress circle when true. False hides it.
      */
-    public void setLoadingMoreItems(boolean loadingMoreItems) {
+    public void setLoadingMorePastTransactions(boolean loadingMoreItems) {
         mIsLoadingMoreItems = loadingMoreItems;
     }
 

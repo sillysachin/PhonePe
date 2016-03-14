@@ -12,7 +12,6 @@
 
     <!-- Basic Android components -->
     <style name="Text">
-        <item name="android:textColor">@color/grey_800</item>
         <item name="android:lineSpacingExtra">2dp</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>

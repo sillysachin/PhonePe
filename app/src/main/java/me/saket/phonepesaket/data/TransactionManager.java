@@ -1,13 +1,11 @@
 package me.saket.phonepesaket.data;
 
-import android.os.Looper;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import me.saket.phonepesaket.data.events.ApiTimeoutErrorEvent;
+import me.saket.phonepesaket.data.events.GenericNetworkErrorEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncEndEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncStartEvent;
 import me.saket.phonepesaket.data.events.TransactionsTableUpdateEvent;
@@ -17,7 +15,6 @@ import me.saket.phonepesaket.data.models.TransactionSyncResponse;
 import me.saket.phonepesaket.data.rxfunctions.ExtractRetrofitResponseOrThrowError;
 import me.saket.phonepesaket.data.rxfunctions.ExtractTransactionsOrThrowError;
 import me.saket.phonepesaket.services.PhonePeApi;
-import me.saket.phonepesaket.utils.Collections;
 import me.saket.phonepesaket.utils.RxUtils;
 import retrofit2.Response;
 import rx.Subscriber;
@@ -31,7 +28,7 @@ import static io.realm.Realm.Transaction.OnSuccess;
  * The data layer for managing all transactions across the app. Provides
  * data from app storage or the server (if a local copy isn't present).
  * Handles syncing with the server too.
- *
+ * <p>
  * All communication with this manager should ideally by one-way.
  * (Presenter -> Manager), but it's okay in cases it's unavoidable.
  */
@@ -85,7 +82,7 @@ public class TransactionManager {
     /**
      * Gets all transactions completed by the user cached in the app. These will
      * be transactions having any one of these statuses:
-     *
+     * <p>
      * {@link TransactionStatus#COMPLETED},
      * {@link TransactionStatus#DECLINED} or
      * {@link TransactionStatus#CANCELLED},
@@ -141,11 +138,8 @@ public class TransactionManager {
 
                     @Override
                     public void onNext(List<Transaction> transactions) {
-                        Log.i(TAG, "Is in main thread: " + (Looper.getMainLooper()
-                                == Looper.myLooper()));
                         savePastTransactions(transactions);
                         emitTransactionSyncEndEvent();
-                        Collections.log(TAG, transactions, "DownSynced past-transactions");
                     }
 
                     @Override
@@ -164,10 +158,9 @@ public class TransactionManager {
             mEventBus.emit(new ApiTimeoutErrorEvent());
 
         } else {
-            // TODO: Show generic error to user.
+            // Show generic error to user.
+            emitGenericNetworkError();
             e.printStackTrace();
-//            final Throwable actualCause = e.getCause();
-//            actualCause.printStackTrace();
         }
     }
 
@@ -198,19 +191,32 @@ public class TransactionManager {
 
 // ======== EVENTS ======== //
 
-    /** Called whenever some Transaction(s) get updated. */
+    /**
+     * Called whenever some Transaction(s) get updated.
+     */
     void emitTransactionsTableUpdateEvent() {
         mEventBus.emit(new TransactionsTableUpdateEvent());
     }
 
-    /** Called when transaction-list downSyncing starts. */
+    /**
+     * Called when transaction-list downSyncing starts.
+     */
     private Action1<Response<TransactionSyncResponse>> emitTransactionSyncStartEvent() {
         return response -> mEventBus.emit(new TransactionListDownSyncStartEvent());
     }
 
-    /** Called when transaction-list downSyncing ends. */
+    /**
+     * Called when transaction-list downSyncing ends.
+     */
     private Action1<Response<TransactionSyncResponse>> emitTransactionSyncEndEvent() {
         return response -> mEventBus.emit(new TransactionListDownSyncEndEvent());
+    }
+
+    /**
+     * Called when the server could not be reached or an invalid response was received.
+     */
+    private void emitGenericNetworkError() {
+        mEventBus.emit(new GenericNetworkErrorEvent());
     }
 
 }
