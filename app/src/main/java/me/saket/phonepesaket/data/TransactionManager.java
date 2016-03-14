@@ -8,6 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 import me.saket.phonepesaket.data.events.ApiTimeoutErrorEvent;
 import me.saket.phonepesaket.data.events.GenericNetworkErrorEvent;
+import me.saket.phonepesaket.data.events.PastTransactionsPaginationEndReachedEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncEndEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncStartEvent;
 import me.saket.phonepesaket.data.events.TransactionsTableUpdateEvent;
@@ -26,6 +27,7 @@ import rx.functions.Func1;
 
 import static io.realm.Realm.Transaction.OnError;
 import static io.realm.Realm.Transaction.OnSuccess;
+import static me.saket.phonepesaket.utils.Collections.isEmpty;
 
 /**
  * The data layer for managing all transactions across the app. Provides
@@ -102,7 +104,7 @@ public class TransactionManager {
     /**
      * Saves transactions completed by or pending from the user.
      */
-    private void savePastTransactions(List<Transaction> transactions) {
+    private void saveTransactions(List<Transaction> transactions) {
         final OnSuccess successCallback = this::emitTransactionsTableUpdateEvent;
         final OnError errorCallback = error -> mDbErrorHandler.handle(error);
         mLocalDataRepository.saveTransactions(transactions, successCallback, errorCallback);
@@ -111,16 +113,20 @@ public class TransactionManager {
 // ======== API CALLS ======== //
 
     /**
+     * Loads transactions completed by the user from the server.
+     *
      * The server does not support pagination yet, so I'm mimicking it manually
      * here. I need two values for this:
      * <p>
      * 1. "From": From where do we want the next data to start. If we already
      * have 10 items in the list, this will be 11. In our case, this would
-     * be the no. of items already present in local data-store.
-     * <p>
-     * Ideally, this should be some timestamp.
+     * be the no. of items already present in local data-store. Ideally, this
+     * should be some timestamp.
      * <p>
      * 2. No. of items to load.
+     *
+     * See the onNext() method inside the API response subscriber to see how
+     * it's working.
      */
     public void loadMorePastTransactionsFromServer() {
         mPhonePeApi.getPastTransactions()
@@ -133,23 +139,27 @@ public class TransactionManager {
                 .subscribe(new Subscriber<List<Transaction>>() {
                     @Override
                     public void onError(Throwable e) {
-                        emitTransactionSyncEndEvent();
-                        handlePastTransactionsSyncError(e);
+                        handleTransactionsSyncError(e);
                     }
 
                     @Override
-                    public void onNext(List<Transaction> transactions) {
-                        emitTransactionSyncEndEvent();
-
+                    public void onNext(List<Transaction> pastTransactions) {
                         // Store only a portion of this transaction
                         // list to mimic pagination
                         final int fromIndex = getPastTransactions().size();
-                        final List<Transaction> transactionSubset = getTransactionSubset(
-                                transactions,
+                        final List<Transaction> pastTransactionSubset = getTransactionSubset(
+                                pastTransactions,
                                 fromIndex,
                                 NO_OF_ITEMS_PER_PAGINATION
                         );
-                        savePastTransactions(transactionSubset);
+                        saveTransactions(pastTransactionSubset);
+
+                        // When no more items remain in the next page, assume that
+                        // we've reached the end of the list and the server has no
+                        // more items to send.
+                        if (isEmpty(pastTransactionSubset) && !isEmpty(pastTransactions)) {
+                            emitPastTxnsPaginationEndReachedEvent();
+                        }
                     }
 
                     @NonNull
@@ -173,13 +183,39 @@ public class TransactionManager {
 
                     }
                 });
+    }
 
+    /**
+     * Loads pending transactions from the server. These are not paginated.
+     */
+    public void loadMorePendingTransactionsFromServer() {
+        mPhonePeApi.getPendingTransactions()
+                .map(new ExtractRetrofitResponseOrThrowError<>())
+                .map(new ExtractTransactionsOrThrowError<>())
+                .map(filterValidPendingTransactions())
+                .compose(RxUtils.applySchedulers())
+                .subscribe(new Subscriber<List<Transaction>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        handleTransactionsSyncError(e);
+                    }
+
+                    @Override
+                    public void onNext(List<Transaction> transactions) {
+                        saveTransactions(transactions);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+                });
     }
 
     /**
      * Handles any errors encountered while down-syncing transactions with the server.
      */
-    void handlePastTransactionsSyncError(Throwable e) {
+    private void handleTransactionsSyncError(Throwable e) {
         if (e instanceof TimeoutException) {
             mEventBus.emit(new ApiTimeoutErrorEvent());
 
@@ -195,23 +231,32 @@ public class TransactionManager {
      * transactions here. That is, transactions with non-CREATED status. This
      * function does exactly that.
      */
-    public Func1<List<Transaction>, List<Transaction>> filterValidPastTransactions() {
+    private Func1<List<Transaction>, List<Transaction>> filterValidPastTransactions() {
         return transactions -> {
-            final List<Transaction> actualPastTransactions = new ArrayList<>(transactions.size());
+            final List<Transaction> filteredTransactions = new ArrayList<>(transactions.size());
+            for (final Transaction transaction : transactions) {
+                if (transaction.getTransactionStatus() != TransactionStatus.CREATED) {
+                    filteredTransactions.add(transaction);
+                }
+            }
+            return filteredTransactions;
+        };
+    }
+
+    /**
+     * Filters only those transactions that have TransactionStatus values equal to
+     * {@link TransactionStatus#CREATED}.
+     */
+    private Func1<List<Transaction>, List<Transaction>> filterValidPendingTransactions() {
+        return transactions -> {
+            final List<Transaction> filteredTransactions = new ArrayList<>(transactions.size());
             for (final Transaction transaction : transactions) {
                 if (transaction.getTransactionStatus() == TransactionStatus.CREATED) {
-                    continue;
+                    filteredTransactions.add(transaction);
                 }
 
-                if (transaction.accountDetails == null) {
-                    // Should never happen, but the mock API
-                    // response contains null bank items.
-                    continue;
-                }
-
-                actualPastTransactions.add(transaction);
             }
-            return actualPastTransactions;
+            return filteredTransactions;
         };
     }
 
@@ -220,7 +265,7 @@ public class TransactionManager {
     /**
      * Called whenever some Transaction(s) get updated.
      */
-    void emitTransactionsTableUpdateEvent() {
+    private void emitTransactionsTableUpdateEvent() {
         mEventBus.emit(new TransactionsTableUpdateEvent());
     }
 
@@ -250,6 +295,13 @@ public class TransactionManager {
      */
     private void emitGenericNetworkError() {
         mEventBus.emit(new GenericNetworkErrorEvent());
+    }
+
+    /**
+     * Called when no more items are available to be downloaded from the server.
+     */
+    private void emitPastTxnsPaginationEndReachedEvent() {
+        mEventBus.emit(new PastTransactionsPaginationEndReachedEvent());
     }
 
 }

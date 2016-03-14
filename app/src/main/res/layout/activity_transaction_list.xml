@@ -19,9 +19,9 @@
             android:id="@+id/list_transaction"
             style="@style/MatchParentStyle"
             android:paddingTop="@dimen/card_spacing_vertical"
-            android:paddingBottom="@dimen/card_spacing_vertical"
+            android:paddingBottom="@dimen/spacing_double"
             android:paddingStart="@dimen/card_spacing_horizontal"
-            android:paddingEnd="@dimen/spacing_double"
+            android:paddingEnd="@dimen/card_spacing_horizontal"
             android:clipToPadding="false"
             />
 

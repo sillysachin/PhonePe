@@ -91,14 +91,14 @@ public class PhonePeApi {
      * Gets pending transactions for the current user.
      */
     public Observable<Response<TransactionSyncResponse>> getPendingTransactions() {
-        return mApiService.getPendingTransactions();
+        return mApiService.getPendingTransactions().delay(1, TimeUnit.SECONDS);
     }
 
     /**
      * Gets the entire list of completed transactions for the current user.
      */
     public Observable<Response<TransactionSyncResponse>> getPastTransactions() {
-        return mApiService.getPastTransactions();
+        return mApiService.getPastTransactions().delay(1, TimeUnit.SECONDS);
     }
 
 }

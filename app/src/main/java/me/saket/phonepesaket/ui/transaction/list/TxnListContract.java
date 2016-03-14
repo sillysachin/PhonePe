@@ -31,6 +31,11 @@ public interface TxnListContract {
          * Called when some error occurred while communicating to the server.
          */
         void showGenericNetworkError();
+
+        /**
+         * Called when there are no more items on the server
+         */
+        void disableLoadMoreTransactionsButton();
     }
 
     interface Presenter {

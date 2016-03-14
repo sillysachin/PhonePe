@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class TransactionListActivity extends BaseActivity implements TxnListCont
 
     @Bind(R.id.root_layout) ViewGroup mRootLayout;
     @Bind(R.id.list_transaction) SimpleRecyclerView mTransactionList;
+    @Bind(R.id.btn_load_some_transactions) Button mLoadMoreButton;
 
     private TransactionListAdapter mTransactionListAdapter;
     private TxnListPresenter mPresenter;
@@ -72,6 +74,11 @@ public class TransactionListActivity extends BaseActivity implements TxnListCont
     @Override
     public void showGenericNetworkError() {
         Snackbar.make(mRootLayout, R.string.could_not_reach_phone_pe_servers, LENGTH_LONG).show();
+    }
+
+    @Override
+    public void disableLoadMoreTransactionsButton() {
+        mLoadMoreButton.setEnabled(false);
     }
 
     @OnClick(R.id.btn_load_some_transactions)

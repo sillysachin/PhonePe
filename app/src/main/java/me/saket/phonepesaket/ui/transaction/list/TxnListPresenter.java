@@ -1,7 +1,6 @@
 package me.saket.phonepesaket.ui.transaction.list;
 
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
@@ -9,6 +8,7 @@ import java.util.List;
 
 import me.saket.phonepesaket.data.TransactionManager;
 import me.saket.phonepesaket.data.events.GenericNetworkErrorEvent;
+import me.saket.phonepesaket.data.events.PastTransactionsPaginationEndReachedEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncEndEvent;
 import me.saket.phonepesaket.data.events.TransactionListDownSyncStartEvent;
 import me.saket.phonepesaket.data.events.TransactionsTableUpdateEvent;
@@ -36,12 +36,11 @@ public class TxnListPresenter extends BasePresenter<TxnListContract.View>
         // Get transactions that are present locally
         refreshUiBasedOnData();
 
-        // TODO:
         // Trigger a sync so that new changes in the app as well as on the server
-        // get synced with the app. This, however, is only possible once we start
-        // storing creation and update timestamps in Transaction model.
-        // Until then, we start fresh on every start
-        //mTransactionManager.deleteAll();
+        // get synced with the app. The manager handles saving the received
+        // transactions and emitting an event when it's done. See onTransactionsUpdate().
+        mTransactionManager.loadMorePastTransactionsFromServer();
+        mTransactionManager.loadMorePendingTransactionsFromServer();
     }
 
     /**
@@ -77,16 +76,22 @@ public class TxnListPresenter extends BasePresenter<TxnListContract.View>
 
     @Subscribe
     public void onLoadMoreTransactionsStart(TransactionListDownSyncStartEvent startEvent) {
-        Log.i(TAG, "DownSyncing more items");
+        // Show progress circle
         mView.setListLoadingProgressIndicatorVisible(true);
         refreshUiBasedOnData();
     }
 
     @Subscribe
     public void onLoadMoreTransactionsComplete(TransactionListDownSyncEndEvent endEvent) {
-        Log.i(TAG, "DownSyncing complete");
+        // Hide progress circle in the list only if no transactions
+        // of any type are being down-synced
         mView.setListLoadingProgressIndicatorVisible(false);
         refreshUiBasedOnData();
+    }
+
+    @Subscribe
+    public void onPaginationEndReached(PastTransactionsPaginationEndReachedEvent endReachedEvent) {
+        mView.disableLoadMoreTransactionsButton();
     }
 
 }
