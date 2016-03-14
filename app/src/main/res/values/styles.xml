@@ -1,11 +1,67 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:textViewStyle">@style/Text</item>
+        <item name="android:buttonStyle">@style/Button</item>
+    </style>
+
+    <!-- Basic Android components -->
+    <style name="Text">
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">42dp</item>
+    </style>
+
+    <style name="Button.Primary" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="colorButtonNormal">@color/color_accent</item>
+        <item name="android:minHeight">42dp</item>
+    </style>
+
+    <style name="Button.Borderless" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">42dp</item>
+    </style>
+
+    <!-- Common styles -->
+    <style name="WrapContentStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="MatchParentStyle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="WrapWidth_MatchHeight_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="MatchWidth_WrapHeight_Style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Card" parent="MatchWidth_WrapHeight_Style">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/elevation_card</item>
+        <item name="android:foreground">@drawable/card_background</item>
+        <item name="android:layout_marginTop">@dimen/card_spacing_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/card_spacing_vertical</item>
     </style>
 
 </resources>

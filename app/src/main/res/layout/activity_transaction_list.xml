@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    style="@style/MatchParentStyle"
+    android:orientation="vertical"
+    tools:context=".ui.transaction.list.TransactionListActivity">
+
+    <include layout="@layout/base_toolbar" />
+
+    <RelativeLayout
+        style="@style/MatchWidth_WrapHeight_Style"
+        android:layout_weight="1"
+        >
+
+        <!-- Transaction list -->
+        <me.saket.phonepesaket.ui.widgets.recyclerview.SimpleRecyclerView
+            android:id="@+id/list_transaction"
+            style="@style/MatchParentStyle"
+            android:paddingTop="@dimen/card_spacing_vertical"
+            android:paddingBottom="@dimen/spacing_double"
+            android:paddingStart="@dimen/card_spacing_horizontal"
+            android:paddingEnd="@dimen/card_spacing_horizontal"
+            android:clipToPadding="false"
+            />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_load_some_transactions"
+        style="@style/Button.Primary"
+        android:text="Load more transactions"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="48dp"
+        android:layout_width="match_parent"
+        />
+
+</LinearLayout>
