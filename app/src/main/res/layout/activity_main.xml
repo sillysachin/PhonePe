@@ -15,4 +15,10 @@
         android:text="@string/transactions"
         />
 
+    <Button
+        android:id="@+id/btn_clear_app_data"
+        style="@style/WrapContentStyle"
+        android:text="@string/clear_app_data"
+        />
+
 </LinearLayout>

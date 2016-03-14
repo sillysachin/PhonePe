@@ -99,6 +99,7 @@ public abstract class RecyclerViewListAdapter<T, VH extends RecyclerView.ViewHol
      */
     public void updateData(List<T> newObjects) {
         onDataAboutToBeUpdated(newObjects);
+        mObjects = newObjects;
         notifyDataSetChanged();
     }
 

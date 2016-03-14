@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchParentStyle"
+    style="@style/MatchWidth_WrapHeight_Style"
     android:paddingTop="@dimen/spacing_small"
     android:paddingBottom="@dimen/spacing_small"
     >
@@ -10,8 +10,10 @@
         android:id="@+id/txt_header"
         style="@style/WrapContentStyle"
         android:text="Header"
-        android:fontFamily="sans-serif-smallcaps"
-        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/grey_600"
+        android:layout_marginLeft="@dimen/spacing_small"
         />
 
 </FrameLayout >

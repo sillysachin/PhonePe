@@ -23,6 +23,7 @@ public class PhonePeApp extends Application {
                 .name(LocalDataRepository.DATABASE_NAME)
                 .schemaVersion(LocalDataRepository.DATABASE_VERSION)
                 .setModules(Realm.getDefaultModule())
+                .migration(new LocalDataRepository.Migration())
                 .build());
     }
 

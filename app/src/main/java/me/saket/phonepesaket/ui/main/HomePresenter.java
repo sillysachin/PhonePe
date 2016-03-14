@@ -1,5 +1,6 @@
 package me.saket.phonepesaket.ui.main;
 
+import me.saket.phonepesaket.data.LocalDataRepository;
 import me.saket.phonepesaket.ui.BasePresenter;
 
 /**
@@ -15,6 +16,11 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
     @Override
     public void onTransactionsClick() {
         getView().showTransactionScreen();
+    }
+
+    @Override
+    public void onClearAppDataClick() {
+        LocalDataRepository.getInstance().deleteAll();
     }
 
 }

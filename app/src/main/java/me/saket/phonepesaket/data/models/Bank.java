@@ -29,6 +29,10 @@ public class Bank extends RealmObject {
     public boolean isPremier;
     public int priority;
 
+    public Bank() {
+        // Reqd. by Gson
+    }
+
     /**
      * Name of the bank. See {@link BankName}
      * Eg., HDFC, Citi bank, etc.
@@ -39,6 +43,15 @@ public class Bank extends RealmObject {
 
     public void setBankName(BankName bankName) {
         mBankName = Objects.toStringSafely(bankName);
+    }
+
+    @Override
+    public String toString() {
+        return "Bank{" +
+                "bankId=" + bankId +
+                ", mBankName='" + mBankName + '\'' +
+                ", ifscPrefix='" + ifscPrefix + '\'' +
+                '}';
     }
 
 }

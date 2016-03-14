@@ -7,5 +7,5 @@ import me.saket.phonepesaket.data.models.Transaction;
  * This can happen when Transaction items were modified or
  * synced with the server.
  */
-public class TransactionsUpdateEvent {
+public class TransactionsTableUpdateEvent {
 }

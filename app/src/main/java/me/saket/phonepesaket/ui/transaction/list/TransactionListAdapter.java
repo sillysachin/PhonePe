@@ -54,6 +54,7 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
     public static final long ITEM_ID_HEADER_HISTORY = 1L;
 
     private final EventBus mEventBus;
+    private boolean mIsLoadingMoreItems;
 
     /**
      * Represents one header in the list.
@@ -179,6 +180,8 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
         });
     }
 
+// ======== DATA-SET ======== //
+
     /**
      * @deprecated Use {@link #updateData(List, List)} instead.
      */
@@ -233,6 +236,13 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
         // Refresh!
         Log.i(TAG, "List updated with " + newItems.size() + " items");
         super.updateData(newItems);
+    }
+
+    /**
+     *
+     */
+    public void setLoadingMoreItems(boolean loadingMoreItems) {
+        mIsLoadingMoreItems = loadingMoreItems;
     }
 
 }

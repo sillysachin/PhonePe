@@ -9,6 +9,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.saket.phonepesaket.R;
 import me.saket.phonepesaket.data.TransactionManager;
 import me.saket.phonepesaket.data.models.Transaction;
@@ -56,6 +57,11 @@ public class TransactionListActivity extends BaseActivity implements TxnListCont
     public void updateTransactionList(List<Transaction> pendingTransactions, List<Transaction>
             pastTransactions) {
         mTransactionListAdapter.updateData(pendingTransactions, pastTransactions);
+    }
+
+    @OnClick(R.id.btn_load_some_transactions)
+    void onLoadMoreTransactionsClick() {
+        mPresenter.onLoadMoreTransactionsClick();
     }
 
 }

@@ -53,7 +53,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // RxJava — Reactive programming
-    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
 
     // JSON parsing
     compile 'com.google.code.gson:gson:2.6.2'

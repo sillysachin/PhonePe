@@ -1,9 +1,8 @@
 package me.saket.phonepesaket.utils;
 
-import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,16 +52,19 @@ public class Collections {
         return bytes == null || bytes.length <= 0;
     }
 
-    @Nullable
-    public static <T> T first(List<T> items) {
-        return !isEmpty(items) ? items.get(0) : null;
-    }
-
     /**
-     * Returns the last item in a list.
+     * Prints the contents of a Collection.
      */
-    public static <T> T last(List<T> newResults) {
-        return Collections.isEmpty(newResults) ? null : newResults.get(newResults.size() - 1);
+    public static void log(String tag, Collection collection, String collectionName) {
+        if (isEmpty(collection)) {
+            Log.w(tag, collectionName + " is empty");
+            return;
+        }
+
+        Log.d(tag, collectionName + " (" + collection.size() + "): ");
+        for (Object object : collection) {
+            Log.i(tag, String.valueOf(object));
+        }
     }
 
 }

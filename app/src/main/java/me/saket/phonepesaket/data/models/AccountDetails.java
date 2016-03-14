@@ -29,6 +29,12 @@ public class AccountDetails extends RealmObject {
     public long bankId;
 
     /**
+     * Details of the {@link Bank} where this account exists.
+     */
+    @SerializedName("bank")
+    public Bank bank;
+
+    /**
      * Account number for this bank account.
      */
     @SerializedName("accountNo")
@@ -53,12 +59,28 @@ public class AccountDetails extends RealmObject {
     public boolean isPrimary;
     public boolean isActive;
 
+    public AccountDetails() {
+        // Reqd. by Gson
+    }
+
     public BigDecimal getBalance() {
         return new BigDecimal(mBalance);
     }
 
     public void setBalance(BigDecimal balance) {
         mBalance = balance.toPlainString();
+    }
+
+    @Override
+    public String toString() {
+        return "AccountDetails{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", bank=" + bank +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", ifsc='" + ifsc + '\'' +
+                ", mBalance='" + mBalance + '\'' +
+                '}';
     }
 
 }

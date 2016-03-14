@@ -17,6 +17,7 @@ public interface TxnListContract {
 
     interface Presenter {
 
+        void onLoadMoreTransactionsClick();
     }
 
 }

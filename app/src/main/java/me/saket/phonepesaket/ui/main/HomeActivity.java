@@ -40,6 +40,11 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         mHomePresenter.onTransactionsClick();
     }
 
+    @OnClick(R.id.btn_clear_app_data)
+    void onClearAppDataButtonClick() {
+        mHomePresenter.onClearAppDataClick();
+    }
+
     @Override
     public void showTransactionScreen() {
         TransactionListActivity.start(this);

@@ -54,4 +54,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="Card" parent="MatchWidth_WrapHeight_Style">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/elevation_card</item>
+        <item name="android:foreground">@drawable/card_background</item>
+        <item name="android:layout_marginTop">@dimen/card_spacing_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/card_spacing_vertical</item>
+    </style>
+
 </resources>

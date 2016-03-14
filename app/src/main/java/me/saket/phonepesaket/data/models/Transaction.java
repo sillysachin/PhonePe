@@ -29,7 +29,7 @@ public class Transaction extends RealmObject {
      * Amount paid / received.
      * See {@link #getAmount()} and {@link #setAmount(BigDecimal)}.
      */
-    @SerializedName("type")
+    @SerializedName("amount")
     private String amount;
 
     /**
@@ -55,6 +55,10 @@ public class Transaction extends RealmObject {
      */
     @SerializedName("isOriginator")
     public boolean isOriginator;
+
+    public Transaction() {
+        // Reqd. by Gson
+    }
 
     public BigDecimal getAmount() {
         return new BigDecimal(amount);
@@ -86,11 +90,22 @@ public class Transaction extends RealmObject {
      * {@link TransactionStatus#DECLINED DECLINED}.
      */
     public TransactionStatus getTransactionStatus() {
-        return transactionStatus == null ? null : TransactionStatus.valueOf(transactionType);
+        return transactionStatus == null ? null : TransactionStatus.valueOf(transactionStatus);
     }
 
     public void setTransactionType(TransactionStatus transactionStatus) {
         this.transactionStatus = Objects.toStringSafely(transactionStatus);
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", accountDetails=" + accountDetails +
+                ", amount='" + amount + '\'' +
+                ", transactionType='" + transactionType + '\'' +
+                ", transactionStatus='" + transactionStatus + '\'' +
+                '}';
     }
 
 }

@@ -14,8 +14,9 @@ public class DataRepoErrorHandler {
         return sDataRepoErrorHandler;
     }
 
-    public void handle(Exception e) {
+    public void handle(Throwable e) {
         // TODO
+        e.printStackTrace();
     }
 
 }

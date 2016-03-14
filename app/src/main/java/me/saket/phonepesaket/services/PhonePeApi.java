@@ -64,13 +64,14 @@ public class PhonePeApi {
 
     /**
      * Returns a GSON converter that Retrofit will use for parsing
-     * request / server-response
+     * request / server-response.
      */
     @NonNull
     private GsonConverterFactory getJsonConverterFactor() {
         final Gson realmCompatibleGson = new GsonBuilder()
                 .setExclusionStrategies(new ExclusionStrategy() {
-                    // Realm workaround
+                    // Setting this exclusion strategy is necessary
+                    // to make Gson work with Realm.
                     @Override
                     public boolean shouldSkipField(FieldAttributes f) {
                         return f.getDeclaringClass().equals(RealmObject.class);
@@ -81,7 +82,6 @@ public class PhonePeApi {
                         return false;
                     }
                 })
-                .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat(ServerApiService.JSON_DATE_FORMAT)
                 .create();
         return GsonConverterFactory.create(realmCompatibleGson);

@@ -4,9 +4,14 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import io.realm.DynamicRealm;
 import io.realm.Realm;
+import io.realm.RealmMigration;
 import me.saket.phonepesaket.data.models.Transaction;
 import me.saket.phonepesaket.data.models.TransactionStatus;
+
+import static io.realm.Realm.Transaction.OnError;
+import static io.realm.Realm.Transaction.OnSuccess;
 
 /**
  * Handles storing and retrieving app's local data.
@@ -32,6 +37,16 @@ public class LocalDataRepository {
     }
 
     /**
+     * Run everytime {@link #DATABASE_VERSION} changes.
+     */
+    public static class Migration implements RealmMigration {
+        @Override
+        public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+
+        }
+    }
+
+    /**
      * Gets all transactions with status as {@link TransactionStatus#CREATED}.
      * Returns an empty list when there are no pending transactions.
      */
@@ -51,6 +66,22 @@ public class LocalDataRepository {
         return mRealm.where(Transaction.class)
                 .notEqualTo(Transaction.COLUMN_TXN_STATUS, TransactionStatus.CREATED.name())
                 .findAll();
+    }
+
+    /**
+     * Saves past-transactions asynchronously to the data store. It's okay to store
+     * the same transaction multiple times — they will get overwritten as long as
+     * they share the same Id.
+     */
+    public void saveTransactions(List<Transaction> pastTransactions, OnSuccess successCallback,
+                                 OnError errorCallback) {
+        mRealm.executeTransactionAsync(bgRealm -> {
+            bgRealm.copyToRealmOrUpdate(pastTransactions);
+        }, successCallback, errorCallback);
+    }
+
+    public void deleteAll() {
+        mRealm.executeTransactionAsync(bgRealm -> bgRealm.deleteAll());
     }
 
 }

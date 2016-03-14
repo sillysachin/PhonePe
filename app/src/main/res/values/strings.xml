@@ -3,6 +3,9 @@
     <string name="app_name">PhonePe</string>
     <string name="transactions">Transactions</string>
 
+    <!-- Home -->
+    <string name="clear_app_data">Clear App Data</string>
+
     <!-- Transaction list -->
     <string name="pending">Pending</string>
     <string name="history">History</string>

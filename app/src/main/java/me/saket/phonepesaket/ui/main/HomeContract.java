@@ -10,6 +10,8 @@ public interface HomeContract {
 
     interface Presenter {
         void onTransactionsClick();
+
+        void onClearAppDataClick();
     }
 
 }
