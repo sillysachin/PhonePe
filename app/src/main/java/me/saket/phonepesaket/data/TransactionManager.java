@@ -17,6 +17,7 @@ import me.saket.phonepesaket.data.rxfunctions.ExtractTransactionsOrThrowError;
 import me.saket.phonepesaket.services.PhonePeApi;
 import me.saket.phonepesaket.utils.RxUtils;
 import retrofit2.Response;
+import rx.Notification;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -128,6 +129,7 @@ public class TransactionManager {
                 .map(new ExtractRetrofitResponseOrThrowError<>())
                 .map(new ExtractTransactionsOrThrowError<>())
                 .map(filterValidPastTransactions())
+                .doOnEach(emitTransactionSyncEndEvent())
                 .compose(RxUtils.applySchedulers())
                 .subscribe(new Subscriber<List<Transaction>>() {
                     @Override
@@ -138,8 +140,8 @@ public class TransactionManager {
 
                     @Override
                     public void onNext(List<Transaction> transactions) {
-                        savePastTransactions(transactions);
                         emitTransactionSyncEndEvent();
+                        savePastTransactions(transactions);
                     }
 
                     @Override
@@ -208,8 +210,15 @@ public class TransactionManager {
     /**
      * Called when transaction-list downSyncing ends.
      */
-    private Action1<Response<TransactionSyncResponse>> emitTransactionSyncEndEvent() {
-        return response -> mEventBus.emit(new TransactionListDownSyncEndEvent());
+    private Action1<Notification<? super List<Transaction>>> emitTransactionSyncEndEvent() {
+        return notification -> {
+            switch (notification.getKind()) {
+                case OnNext:
+                case OnError:
+                    mEventBus.emit(new TransactionListDownSyncEndEvent());
+                    break;
+            }
+        };
     }
 
     /**
