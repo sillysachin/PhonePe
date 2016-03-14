@@ -1,6 +1,7 @@
 package me.saket.phonepesaket.ui.transaction.list;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -42,8 +43,8 @@ public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
      */
     void bindPending(Transaction transaction) {
         bindTitleTimestampAndAmount(transaction);
-        setActionButtonsVisible(true);
-        setTransactionIdVisible(false);
+        setActionButtonsVisible(true);      // Show Action buttons
+        setTransactionIdVisible(false);     // Hide txn Id
     }
 
     /**
@@ -52,11 +53,15 @@ public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
      */
     void bindPast(Transaction transaction) {
         bindTitleTimestampAndAmount(transaction);
-        setActionButtonsVisible(false);
-        setTransactionIdVisible(true);
+        setActionButtonsVisible(false);     // Hide Action buttons
+        setTransactionIdVisible(true);      // Show txn Id
 
         payButton.setOnClickListener(null);
         declineButton.setOnClickListener(null);
+
+        // Transaction Id
+        final Resources resources = itemView.getResources();
+        transactionId.setText(resources.getString(R.string.transaction_id_x, transaction.id));
     }
 
     /**
@@ -71,7 +76,7 @@ public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
         // Show relative timestamp (eg., "5 hours ago", "Now", etc.)
         timestampText.setText(getRelativeTimestamp(
                 timestampText.getContext(),
-                System.currentTimeMillis() - (TimeUtils.DAY_IN_MILLIS * 5)
+                System.currentTimeMillis() - (TimeUtils.HOURS_IN_MILLIS * 5)
         ));
 
         // Transaction amount
