@@ -21,7 +21,7 @@
             android:paddingTop="@dimen/card_spacing_vertical"
             android:paddingBottom="@dimen/card_spacing_vertical"
             android:paddingStart="@dimen/card_spacing_horizontal"
-            android:paddingEnd="@dimen/card_spacing_horizontal"
+            android:paddingEnd="@dimen/spacing_double"
             android:clipToPadding="false"
             />
 
@@ -29,9 +29,11 @@
 
     <Button
         android:id="@+id/btn_load_some_transactions"
-        style="@style/WrapContentStyle"
-        android:text="Load more transaction"
+        style="@style/Button.Primary"
+        android:text="Load more transactions"
         android:layout_gravity="center_horizontal"
+        android:minHeight="48dp"
+        android:layout_width="match_parent"
         />
 
 </LinearLayout>

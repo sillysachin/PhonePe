@@ -77,6 +77,9 @@ public class TransactionListActivity extends BaseActivity implements TxnListCont
     @OnClick(R.id.btn_load_some_transactions)
     void onLoadMoreTransactionsClick() {
         mPresenter.onLoadMoreTransactionsClick();
+
+        // Also scroll to the bottom so that the new items become visible
+        mTransactionList.scrollToPosition(mTransactionListAdapter.getItemCount() - 1);
     }
 
 }

@@ -1,5 +1,7 @@
 package me.saket.phonepesaket.data;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -36,7 +38,7 @@ import static io.realm.Realm.Transaction.OnSuccess;
 public class TransactionManager {
 
     private static final String TAG = "TransactionManager";
-    public static final int NO_OF_ITEMS_PER_PAGINATION = 10;
+    public static final int NO_OF_ITEMS_PER_PAGINATION = 5;
 
     private static TransactionManager sTransactionManager;
     private LocalDataRepository mLocalDataRepository;
@@ -121,9 +123,6 @@ public class TransactionManager {
      * 2. No. of items to load.
      */
     public void loadMorePastTransactionsFromServer() {
-        final int fromIndex = getPastTransactions().size();
-        final int itemsToLoad = NO_OF_ITEMS_PER_PAGINATION;
-
         mPhonePeApi.getPastTransactions()
                 .doOnNext(emitTransactionSyncStartEvent())
                 .map(new ExtractRetrofitResponseOrThrowError<>())
@@ -141,7 +140,32 @@ public class TransactionManager {
                     @Override
                     public void onNext(List<Transaction> transactions) {
                         emitTransactionSyncEndEvent();
-                        savePastTransactions(transactions);
+
+                        // Store only a portion of this transaction
+                        // list to mimic pagination
+                        final int fromIndex = getPastTransactions().size();
+                        final List<Transaction> transactionSubset = getTransactionSubset(
+                                transactions,
+                                fromIndex,
+                                NO_OF_ITEMS_PER_PAGINATION
+                        );
+                        savePastTransactions(transactionSubset);
+                    }
+
+                    @NonNull
+                    private List<Transaction> getTransactionSubset(List<Transaction> transactions,
+                                                               int fromIndex, int itemsToKeep) {
+                        final List<Transaction> transactionSubset = new ArrayList<>(itemsToKeep);
+                        for (int i = 0; i < transactions.size(); i++) {
+                            if (i < fromIndex) {
+                                continue;
+
+                            } else if (transactionSubset.size() == itemsToKeep) {
+                                break;
+                            }
+                            transactionSubset.add(transactions.get(i));
+                        }
+                        return transactionSubset;
                     }
 
                     @Override
