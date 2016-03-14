@@ -5,6 +5,8 @@
 ##### Work done:
 * Transaction list shows Pending and Completed transactions.
 
+* Transactions of both types are fetched from the server.
+
 * Pagination works
 
 * Project follows the MVP design pattern.
