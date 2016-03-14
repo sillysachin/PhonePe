@@ -1,5 +1,4 @@
 # PhonePe
-Assignment project for PhonePe.
 
 ![Transaction list](http://i.imgur.com/0TtH3Q4.png)
 
@@ -19,7 +18,9 @@ Assignment project for PhonePe.
 
 * Transaction details
 
-* All tranactions with a specific user
+* All transactions with a specific user
+
+The last two were out of the scope for this assignment, but I still wanted to do them because I quite enjoyed imagining how the app will work.
 
 ##### What could be improved:
 * Showing of progress indicator. This is shown only when past transactions are being downloaded, but when pending transactions are downloaded.
