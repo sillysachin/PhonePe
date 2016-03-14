@@ -13,6 +13,7 @@ import me.saket.phonepesaket.data.EventBus;
 import me.saket.phonepesaket.data.events.OnTransactionDeclineEvent;
 import me.saket.phonepesaket.data.events.OnTransactionPayClickEvent;
 import me.saket.phonepesaket.data.models.Transaction;
+import me.saket.phonepesaket.data.models.TransactionStatus;
 import me.saket.phonepesaket.ui.widgets.recyclerview.RecyclerViewListAdapter;
 
 import static me.saket.phonepesaket.utils.Collections.isEmpty;
@@ -164,19 +165,25 @@ public class TransactionListAdapter extends RecyclerViewListAdapter<Object,
      */
     private void bindTransactionItem(ViewHolderTransactionItem transactionItemVh,
                                      Transaction transaction) {
-        // The ViewHolder handles binding the title,
-        // avatar, amount and timestamp.
-        transactionItemVh.bind(transaction);
+        if (transaction.getTransactionStatus() == TransactionStatus.CREATED) {
+            // This is a pending transaction.
+            transactionItemVh.bindPending(transaction);
 
-        // Pay button
-        transactionItemVh.payButton.setOnClickListener(view -> {
-            mEventBus.emit(new OnTransactionPayClickEvent(transaction));
-        });
+            // Pay button
+            transactionItemVh.payButton.setOnClickListener(view -> {
+                mEventBus.emit(new OnTransactionPayClickEvent(transaction));
+            });
 
-        // Decline button
-        transactionItemVh.declineButton.setOnClickListener(view -> {
-            mEventBus.emit(new OnTransactionDeclineEvent(transaction));
-        });
+            // Decline button
+            transactionItemVh.declineButton.setOnClickListener(view -> {
+                mEventBus.emit(new OnTransactionDeclineEvent(transaction));
+            });
+
+        } else {
+            // Completed transaction
+            transactionItemVh.bindPast(transaction);
+
+        }
     }
 
 // ======== DATA-SET ======== //

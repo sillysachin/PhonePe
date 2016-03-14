@@ -23,7 +23,7 @@
         <!-- Display name for this transaction.
          Eg., "{User} has requested", "Electricity bill due {date} -->
         <TextView
-            android:id="@+id/transaction_title"
+            android:id="@+id/txt_transaction_title"
             style="@style/WrapContentStyle"
             tools:text="{Transaction name}"
             android:layout_toEndOf="@+id/avatar"
@@ -31,23 +31,23 @@
 
         <!-- Amount -->
         <TextView
-            android:id="@+id/transaction_amount"
+            android:id="@+id/txt_transaction_amount"
             style="@style/WrapContentStyle"
             android:text="₹3,000"
             android:textSize="@dimen/text_size_xxxlarge"
-            android:layout_alignStart="@+id/transaction_title"
-            android:layout_below="@+id/transaction_title"
+            android:layout_alignStart="@+id/txt_transaction_title"
+            android:layout_below="@+id/txt_transaction_title"
             />
 
         <!-- Timestamp -->
         <TextView
-            android:id="@+id/timestamp"
+            android:id="@+id/txt_timestamp"
             style="@style/WrapContentStyle"
             android:text="5 hr ago"
             android:textColor="@color/secondary_text"
-            android:layout_alignTop="@+id/btn_decline"
-            android:layout_alignBottom="@+id/btn_decline"
+            android:layout_below="@+id/txt_transaction_amount"
             android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_near_normal"
             />
 
         <!-- Action buttons -->
@@ -58,6 +58,7 @@
             android:text="@string/decline"
             android:layout_toStartOf="@+id/btn_pay"
             android:layout_alignTop="@+id/btn_pay"
+            android:visibility="gone"
             />
 
         <!-- Pay -->
@@ -67,7 +68,20 @@
             android:theme="@style/Button.Primary"
             android:text="@string/pay"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/transaction_amount"
+            android:layout_below="@+id/txt_transaction_amount"
+            android:visibility="gone"
+            />
+
+        <!-- Transaction Id -->
+        <TextView
+            android:id="@+id/txt_transaction_id"
+            style="@style/WrapContentStyle"
+            android:text="@string/transaction_id_x"
+            android:textColor="@color/secondary_text"
+            android:layout_below="@+id/txt_transaction_amount"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_near_normal"
+            android:layout_alignParentEnd="true"
             />
 
     </RelativeLayout>

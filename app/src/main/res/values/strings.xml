@@ -16,6 +16,10 @@
     <string name="decline">Decline</string>
     <string name="phone_recharge">Phone recharge</string>
     <string name="user_has_requested">{User} has requested</string>
-    <string name="you_paid">You paid</string>
-
+    <string name="transaction_id_x">Txn ID: %1$d</string>
+    
+    <string name="successfully_paid">Successfully paid</string>
+    <string name="payment_canceled">Payment canceled</string>
+    <string name="payment_declined">Payment declined</string>
+    
 </resources>

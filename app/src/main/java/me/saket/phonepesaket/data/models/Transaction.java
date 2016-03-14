@@ -93,7 +93,7 @@ public class Transaction extends RealmObject {
         return transactionStatus == null ? null : TransactionStatus.valueOf(transactionStatus);
     }
 
-    public void setTransactionType(TransactionStatus transactionStatus) {
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = Objects.toStringSafely(transactionStatus);
     }
 

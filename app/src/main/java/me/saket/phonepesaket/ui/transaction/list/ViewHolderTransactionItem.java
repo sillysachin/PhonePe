@@ -14,16 +14,18 @@ import me.saket.phonepesaket.R;
 import me.saket.phonepesaket.data.models.Transaction;
 import me.saket.phonepesaket.data.models.TransactionType;
 import me.saket.phonepesaket.utils.Numbers;
+import me.saket.phonepesaket.utils.TimeUtils;
 
 /**
  * ViewHolder for one item in the transaction list. Used in {@link TransactionListAdapter}.
- * The data-binding part happens inside {@link #bind(Transaction)}.
+ * The data-binding part happens inside {@link #bindPending(Transaction)}.
  */
 public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.transaction_title) TextView titleText;
-    @Bind(R.id.transaction_amount) TextView amountText;
-    @Bind(R.id.timestamp) TextView timestampText;
+    @Bind(R.id.txt_transaction_title) TextView titleText;
+    @Bind(R.id.txt_transaction_amount) TextView amountText;
+    @Bind(R.id.txt_timestamp) TextView timestampText;
+    @Bind(R.id.txt_transaction_id) TextView transactionId;
 
     @Bind(R.id.btn_decline) Button declineButton;
     @Bind(R.id.btn_pay) Button payButton;
@@ -34,22 +36,51 @@ public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
     }
 
     /**
-     * Binds the data of one {@link Transaction} with this VH's Views.
-     * OnClick listeners for the action buttons (Pay, Decline) must be
-     * handled by the adapter.
+     * Binds the data of a pending {@link Transaction} with this VH's Views.
+     * Shows PAY and DECLINE buttons. Their OnClick listeners must be handled
+     * by the adapter.
      */
-    void bind(Transaction transaction) {
+    void bindPending(Transaction transaction) {
+        bindTitleTimestampAndAmount(transaction);
+        setActionButtonsVisible(true);
+        setTransactionIdVisible(false);
+    }
+
+    /**
+     * Binds the data of a completed {@link Transaction} with this VH's Views.
+     * PAY and DECLINE buttons are hidden. Transaction Ids are visible.
+     */
+    void bindPast(Transaction transaction) {
+        bindTitleTimestampAndAmount(transaction);
+        setActionButtonsVisible(false);
+        setTransactionIdVisible(true);
+
+        payButton.setOnClickListener(null);
+        declineButton.setOnClickListener(null);
+    }
+
+    /**
+     * Binds title, amount and timestamp.
+     * These are common to pending and past transactions.
+     */
+    void bindTitleTimestampAndAmount(Transaction transaction) {
         // Title
         // Eg., "{User} has requested", "Electricity bill due {date}"
         titleText.setText(constructTransactionDisplayTitle(transaction));
 
         // Show relative timestamp (eg., "5 hours ago", "Now", etc.)
-        //timestampText.setText(getRelativeTimestamp(transaction.timeUpdatedMs));
+        timestampText.setText(getRelativeTimestamp(
+                timestampText.getContext(),
+                System.currentTimeMillis() - (TimeUtils.DAY_IN_MILLIS * 5)
+        ));
 
         // Transaction amount
         amountText.setText(getAmountTextWithRupeeSymbol(transaction));
     }
 
+    /**
+     * Pretty formats the amount with commas and Indian rupee symbol.
+     */
     private static String getAmountTextWithRupeeSymbol(Transaction transaction) {
         return Numbers.IndianFigureFormatter.format(transaction.getAmount().doubleValue());
     }
@@ -65,7 +96,19 @@ public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
         final TransactionType transactionType = transaction.getTransactionType();
         switch (transactionType) {
             case PAY:
-                return R.string.you_paid;
+                switch (transaction.getTransactionStatus()) {
+                    case COMPLETED:
+                        return R.string.successfully_paid;
+
+                    case CANCELLED:
+                        return R.string.payment_canceled;
+
+                    case DECLINED:
+                        return R.string.payment_declined;
+
+                    case CREATED:
+                        return R.string.user_has_requested;
+                }
 
             case COLLECT:
                 return R.string.user_has_requested;
@@ -84,6 +127,22 @@ public class ViewHolderTransactionItem extends RecyclerView.ViewHolder {
      */
     private static CharSequence getRelativeTimestamp(Context context, long timeMs) {
         return DateUtils.getRelativeTimeSpanString(context, timeMs);
+    }
+
+    /**
+     * Sets the visibility of action buttons. They should only be visible
+     * for pending transactions.
+     */
+    private void setActionButtonsVisible(boolean visible) {
+        payButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+        declineButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Transaction Id is shown for completed transactions.
+     */
+    private void setTransactionIdVisible(boolean visible) {
+        transactionId.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
 }
