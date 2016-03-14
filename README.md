@@ -11,6 +11,8 @@
 
 * Transactions are cached on the device, but are never updated even if there's a newer version available on the server. Solving this would require maintaining timestamps in `Transaction` model to accurately identify updated transactions.
 
+* Amounts shown in the transaction list items are pretty formatted according to the Indian format. For example, 135600 will show up as 1,35,600
+
 ##### What I had aimed for, but could not finish:
 * Auto-load more items when the list is scrolled to bottom. I wanted to create this manually instead of relying on a library. But it's also pretty easy to do so. Simply register a scroll listener and auto-load items when the end is reached.
 
