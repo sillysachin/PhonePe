@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import me.saket.phonepesaket.data.events.ApiTimeoutErrorEvent;
@@ -131,6 +132,7 @@ public class TransactionManager {
     public void loadMorePastTransactionsFromServer() {
         mPhonePeApi.getPastTransactions()
                 .doOnNext(emitTransactionSyncStartEvent())
+                .delay(1, TimeUnit.SECONDS)
                 .map(new ExtractRetrofitResponseOrThrowError<>())
                 .map(new ExtractTransactionsOrThrowError<>())
                 .map(filterValidPastTransactions())

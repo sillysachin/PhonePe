@@ -1,6 +1,7 @@
 package me.saket.phonepesaket.ui.transaction.list;
 
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
@@ -77,6 +78,7 @@ public class TxnListPresenter extends BasePresenter<TxnListContract.View>
     @Subscribe
     public void onLoadMoreTransactionsStart(TransactionListDownSyncStartEvent startEvent) {
         // Show progress circle
+        Log.i(TAG, "Downsyncing start");
         mView.setListLoadingProgressIndicatorVisible(true);
         refreshUiBasedOnData();
     }
@@ -85,6 +87,7 @@ public class TxnListPresenter extends BasePresenter<TxnListContract.View>
     public void onLoadMoreTransactionsComplete(TransactionListDownSyncEndEvent endEvent) {
         // Hide progress circle in the list only if no transactions
         // of any type are being down-synced
+        Log.i(TAG, "Downsyncing end");
         mView.setListLoadingProgressIndicatorVisible(false);
         refreshUiBasedOnData();
     }
